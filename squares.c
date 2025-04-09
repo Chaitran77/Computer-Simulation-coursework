@@ -5,7 +5,7 @@
 // Initialising (to zeros) and writing to an array
 // for loop with a loop nested inside. => iterator assigment, compare operations, increment operations.
 
-
+// Written by Kiran
 
 int squares[201] = {0};
 
