@@ -7,7 +7,8 @@
 #include "utils/register_translator.h"
 #include "utils/register_structs.h"
 #include "utils/tests.h"
-// #include "utils/memory.h"
+#include "utils/memory.h"
+
 #include "utils/bootloader.h"
 
 typedef enum {R, I, J} instructionType;
@@ -97,8 +98,8 @@ int main(int argc, char **argv) {
         clock = !clock;
         printf("Clock cycle number: %d\n", cycleNumber);
 
-        output_DM();
         output_IM();
+        output_DM();
 
         if (clock) { // first half of clock cycle
             cycleNumber++;
