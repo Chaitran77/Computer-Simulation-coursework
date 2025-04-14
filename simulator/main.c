@@ -9,7 +9,6 @@
 #include "utils/tests.h"
 #include "utils/memory.h"
 
-#include "utils/bootloader.h"
 
 typedef enum {R, I, J} instructionType;
 typedef enum {IF, ID, EX, MEM, WB} STATE;
@@ -68,8 +67,8 @@ typedef struct {
     STATE state;
 } instructionState;
 
-void ASM(STATE state) {
-    switch (state)
+void ASM(instructionState *instructionState) {
+    switch (instructionState -> state)
     {
     case IF:
         /* code */
@@ -90,7 +89,7 @@ void ASM(STATE state) {
 
 int main(int argc, char **argv) {
 
-    // FILE *program_file = fopen(argv[1], "r"); 
+    bootloader(argv);
     
     do {
         printf("Press enter for next half cycle\n");
