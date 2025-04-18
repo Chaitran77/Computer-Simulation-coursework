@@ -13,3 +13,13 @@ typedef struct {
 typedef struct {
     bool RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp1, ALUOp2;
 } control_unit;
+
+
+typedef struct {
+    char opcode[10];
+    uint8_t rs, rt, rd;
+    int8_t shamt, funct;
+    int16_t immediate;
+    uint32_t address; // following 26-bit address convention, but IM really only requires 8 bits
+} instructionEncapuslator;
+

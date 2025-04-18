@@ -8,10 +8,12 @@
 #include "utils/register_structs.h"
 #include "utils/tests.h"
 #include "utils/memory.h"
+#include "utils/bootloader.h"
 
 
 typedef enum {R, I, J} instructionType;
 typedef enum {IF, ID, EX, MEM, WB} STATE;
+
 
 #define ADD 0b00101001
 
@@ -89,7 +91,7 @@ void ASM(instructionState *instructionState) {
 
 int main(int argc, char **argv) {
 
-    bootloader(argv);
+    bootloader(argv[1]);
     
     do {
         printf("Press enter for next half cycle\n");

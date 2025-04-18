@@ -13,12 +13,13 @@ void print_bin(unsigned int integer)
 
 // 2 sets of addressable memory
 
-static uint32_t IM[256] = {0}; // prog. len. ~64 lines => 256, 32-bit wide instructions => 8-bit addr
+// static uint32_t IM[256] = {0}; // prog. len. ~64 lines => capacity is 256, 32-bit wide instructions (8-bit addr)
+static instructionEncapuslator IM[256]; // prog. len. ~64 lines => capacity is 256, 32-bit wide instructions (8-bit addr)
 static uint32_t DM[256] = {0}; // max data addresses = 256, 32-bit wide data => 8-bit addr
 
-uint32_t get_inst(uint8_t addr) {
+instructionEncapuslator *get_inst(uint8_t addr) {
     if (addr > (sizeof(IM)/sizeof(IM[0]))-1) printf("OUTSIDE of INSTRUCTION memory");
-    return IM[addr];
+    return &IM[addr];
 }
 
 uint32_t get_data(uint8_t addr) {
@@ -26,22 +27,35 @@ uint32_t get_data(uint8_t addr) {
     return DM [addr];
 }
 
-void set_inst(uint8_t addr, uint32_t inst) {
-    IM[addr] = inst;
+void set_inst(uint8_t addr, instructionEncapuslator inst) {
+    if (addr < (sizeof(IM)/sizeof(IM[0]))) {
+        IM[addr] = inst;
+    } else {
+        printf("OUTSIDE of INSTRUCTION memory");
+    }
 }
 
 void set_data(uint8_t addr, uint32_t data) {
-    DM[addr] = data;
+    if (addr < (sizeof(DM)/sizeof(DM[0]))) {
+        DM[addr] = data;
+    } else {
+        printf("OUTSIDE of INSTRUCTION memory");
+    };
 }
 
 // for debugging
 void output_IM() {
     printf("INST MEM\nAddress		Instruction\n");
-    for (uint8_t i = 0; i < (sizeof(IM)/sizeof(IM[0]))-1; i++)
+    for (uint16_t i = 0; i < (sizeof(IM)/sizeof(IM[0])); i++)
     {
+        // When instructions were binary
+        // print_bin(get_inst(i));
+        
         printf("%7d		", i);
-        print_bin(get_inst(i));
+        printf("%s", get_inst(i)->opcode);
         printf("\n");
+
+        
     }
     
 }
@@ -57,7 +71,7 @@ void output_DM() {
     
     printf("DATA MEM\n");
 
-    for (uint16_t i = 0; i < (1<<8); i++) // (sizeof(DM)/sizeof(DM[0]))
+    for (uint16_t i = 0; i < (sizeof(DM)/sizeof(DM[0])); i++) // (sizeof(DM)/sizeof(DM[0]))
     {
         printf("%3d %6d %c", i, get_data(i), ((i%4)==3)?'\n':' ');
     }
