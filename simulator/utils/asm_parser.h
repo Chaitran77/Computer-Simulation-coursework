@@ -42,10 +42,34 @@ void parse_tokens(instructionEncapuslator *instPointer, char token_list[5][11]) 
     printf("\n");
 
     if (strcmp(instPointer->opcode, "J") == 0) {
-        printf("\nJUMP LINE NUMBER: %d\n", atoi(token_list[1]));
-        instPointer->immediate = strtol(token_list[1], NULL, 10);
-        printf("JUMP %d\n", instPointer->immediate);
+        instPointer->type = J;
+        instPointer->address = strtol(token_list[1], NULL, 10);
     }
+    
+    if ((strcmp(instPointer->opcode, "ADD") == 0) || (strcmp(instPointer->opcode, "SLT") == 0)) {
+        instPointer->type = R;
+        instPointer->rs = register_translator(token_list[2]);
+        instPointer->rt = register_translator(token_list[3]);
+        instPointer->rd = register_translator(token_list[1]);
+
+        if (strcmp(instPointer->opcode, "ADD") == 0) {
+            instPointer->funct = 0;
+        } else if (strcmp(instPointer->opcode, "SLT") == 0) {
+            instPointer->funct = 1;
+        }
+        // instPointer->shamt will always be 0 since there are no instructions that require it
+        
+    }
+
+    if ((strcmp(instPointer->opcode, "LW") == 0) || (strcmp(instPointer->opcode, "SW") == 0)|| (strcmp(instPointer->opcode, "ADDI") == 0)|| (strcmp(instPointer->opcode, "BEQ") == 0)) {
+        instPointer->type = I;
+        instPointer->rs = register_translator(token_list[2]);
+        instPointer->rt = register_translator(token_list[1]);
+        instPointer->immediate = token_list[3];
+
+        // absolute addressing is used for LW and SW and the immediate is not read (given rs register contains address)
+    }
+
 
 
     // LABEL, check if final character of token is ':'
@@ -65,7 +89,7 @@ instructionEncapuslator parse_line(char line[150]) {
     not_printf(line, 50);
     printf("\n");
 
-    instructionEncapuslator parsed_instruction = {.opcode="NONE", .rd=15, .rs=16, .rt=17};
+    instructionEncapuslator parsed_instruction = {.opcode="NONE", .type=-1, .rs=0, .rt=0, .rd=0, .shamt=0, .immediate=0, .address=0};
     
     
     int i = 0;
