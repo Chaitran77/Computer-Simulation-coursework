@@ -1,15 +1,21 @@
 // most combinational wires/connections are made here
 
 void fetch(IFID *IFID_state_register, EXMEM *EXMEM_state_register, uint8_t *PC_address) {
+    
     IFID_state_register->PCNext = ADD(*PC_address, 1);
-
+    
     PC_address = (uint8_t*)MUX_2to1(
         &IFID_state_register->PCNext,
         &EXMEM_state_register->PCNext, 
         AND(EXMEM_state_register->sig_Branch, EXMEM_state_register->sig_ALUZero)
     );
+    
+    
+    printf("FETCHING INSTRUCTION NUMBER %d", *PC_address);
 
     IM_process(IFID_state_register, *PC_address);
+
+    printf("FETCHED INSTRUCTION ")
 }
 
 void decode(IFID *IFID_state_register, MEMWB *MEMWB_state_register, IDEX *IDEX_state_register) {

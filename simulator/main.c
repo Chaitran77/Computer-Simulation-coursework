@@ -27,10 +27,10 @@ If chained together correctly and each block is correctly implemented then the w
 
 
 // TODO: Pipeline stage registers
-IFID IFID_pipeline_register = {0};
-IDEX IDEX_pipeline_register = {0};
-EXMEM EXMEM_pipeline_register = {0};
-MEMWB MEMWB_pipeline_register = {0};
+IFID IFID_pipeline_register, IFID_pipeline_register_snapshot = {0};
+IDEX IDEX_pipeline_register, IDEX_pipeline_register_snapshot = {0};
+EXMEM EXMEM_pipeline_register, EXMEM_pipeline_register_snapshot = {0};
+MEMWB MEMWB_pipeline_register, MEMWB_pipeline_register_snapshot = {0};
 
 
 SPRs SPR_FILE = {.PC = 0b0};
@@ -81,12 +81,17 @@ int main(int argc, char **argv) {
 
         
         if (clock) { // first half of clock cycle
+
+            IFID_pipeline_register_snapshot = IFID_pipeline_register;
+            IDEX_pipeline_register_snapshot = IDEX_pipeline_register;
+            EXMEM_pipeline_register_snapshot = EXMEM_pipeline_register;
+            MEMWB_pipeline_register_snapshot = MEMWB_pipeline_register;
             
             // all this happens simulataneously in real HW
             fetch(&IFID_pipeline_register, &EXMEM_pipeline_register, &SPR_FILE.PC);
-            decode(&IFID_pipeline_register, &MEMWB_pipeline_register, &IDEX_pipeline_register);
-            execute(&IDEX_pipeline_register, &EXMEM_pipeline_register);
-            memory(&EXMEM_pipeline_register, &MEMWB_pipeline_register);
+            decode(&IFID_pipeline_register_snapshot, &MEMWB_pipeline_register_snapshot, &IDEX_pipeline_register);
+            execute(&IDEX_pipeline_register_snapshot, &EXMEM_pipeline_register);
+            memory(&EXMEM_pipeline_register_snapshot, &MEMWB_pipeline_register);
             writeback();
 
             output_IM();
