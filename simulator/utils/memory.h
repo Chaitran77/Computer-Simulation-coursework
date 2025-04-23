@@ -11,8 +11,8 @@ uint32_t get_data(uint8_t addr);
 void set_data(uint8_t addr, uint32_t data);
 
 
-uint32_t get_register(uint8_t number);
-void set_register(uint8_t number, uint32_t value);
+uint32_t get_reg(uint8_t number);
+void set_reg(uint8_t number, uint32_t value);
 
 
 
@@ -32,16 +32,16 @@ void DM_process(EXMEM *EXMEM_state_register, MEMWB *MEMWB_state_register) {
 
 void registers_process(IFID *IFID_state_register, MEMWB *MEMWB_state_register, IDEX *IDEX_state_register) {
     if (MEMWB_state_register->sig_RegWrite) {
-        // could have used a ternery conditional as set_register() argument, but names are a bit long
+        // could have used a ternery conditional as set_reg() argument, but names are a bit long
         if (MEMWB_state_register->sig_MemtoReg)
-            set_register(MEMWB_state_register->writeRegister, MEMWB_state_register->DMReadData);
+            set_reg(MEMWB_state_register->writeRegister, MEMWB_state_register->DMReadData);
         else {
-            set_register(MEMWB_state_register->writeRegister, MEMWB_state_register->ALUResult);
+            set_reg(MEMWB_state_register->writeRegister, MEMWB_state_register->ALUResult);
         }
     }
 
-    IDEX_state_register->REGReadData1 = get_register(IFID_state_register->instruction.rs);
-    IDEX_state_register->REGReadData2 = get_register(IFID_state_register->instruction.rt);
+    IDEX_state_register->REGReadData1 = get_reg(IFID_state_register->instruction.rs);
+    IDEX_state_register->REGReadData2 = get_reg(IFID_state_register->instruction.rt);
 
 }
 
@@ -56,7 +56,7 @@ static uint32_t DM[256] = {0}; // max data addresses = 256, 32-bit wide data => 
 static uint32_t REG[32] = {0};
 
 uint32_t get_reg(uint8_t reg_number) {
-    if (!(reg_number > 32 || reg_number < 1)) return REG[reg_number-1];
+    if (!(reg_number > 32 || reg_number < 0)) return REG[reg_number-1];
     printf("INVALID REGISTER %d", reg_number); exit(-1); 
 }
 
@@ -103,13 +103,10 @@ void print_instruction(int address) {
     instructionEncapuslator *inst = get_inst(address);
     
     printf(
-        "OP: %5s | rs: %2s%d | rt: %2s%d | rd: %2s%d | funct: %1d | shamt: %2d | imm: %5d | addr: %5d|\n", 
+        "OP: %5s | rs: %2d | rt: %2d | rd: %2d | funct: %1d | shamt: %2d | imm: %5d | addr: %5d|\n", 
         inst->opcode,
-        "r", 
         inst->rs,
-        "r", 
         inst->rt,
-        "r", 
         inst->rd,
         inst->funct,
         inst->shamt,
@@ -122,6 +119,7 @@ void output_IM() {
     printf("INST MEM\nAddress		Instruction\n");
     for (uint16_t i = 0; i < (sizeof(IM)/sizeof(IM[0])); i++)
     {        
+        if (i==20) break;
         printf("%7d		", i);
         print_instruction(i);
     }
@@ -130,18 +128,20 @@ void output_IM() {
 
 void output_DM() {
     // for testing
+    #ifdef TEST
     DM[200] = 3;
     DM[201] = 31;
     DM[202] = 314;
     DM[203] = 3141;
     DM[204] = 31415;
     DM[205] = 314159;
-    
+    #endif
+
     printf("DATA MEM\n");
 
     for (uint16_t i = 0; i < (sizeof(DM)/sizeof(DM[0])); i++) // (sizeof(DM)/sizeof(DM[0]))
     {
-        printf("%3d %6d %c", i, get_data(i), ((i%4)==3)?'\n':' ');
+        printf("%3d %6d %c", i, get_data(i), ((i%8)==7)?'\n':' ');
     }
     
 }

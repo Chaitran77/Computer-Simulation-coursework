@@ -3,24 +3,28 @@
 void fetch(IFID *IFID_state_register, EXMEM *EXMEM_state_register, uint8_t *PC_address) {
     IFID_state_register->PCNext = ADD(*PC_address, 1);
 
-    PC_address = (uint8_t)MUX_2to1(
+    PC_address = (uint8_t*)MUX_2to1(
         &IFID_state_register->PCNext,
         &EXMEM_state_register->PCNext, 
         AND(EXMEM_state_register->sig_Branch, EXMEM_state_register->sig_ALUZero)
     );
 
-    IM_process(IFID_state_register, PC_address);
+    IM_process(IFID_state_register, *PC_address);
 }
 
 void decode(IFID *IFID_state_register, MEMWB *MEMWB_state_register, IDEX *IDEX_state_register) {
 
-    control_signal_decoder(IFID_state_register->instruction, &IDEX_state_register);
-    
     IDEX_state_register->PCNext = IFID_state_register->PCNext;
-    registers_process(&IFID_state_register, &MEMWB_state_register, &IDEX_state_register);
+
     IDEX_state_register->signExtImm = IFID_state_register->instruction.immediate; // TODO: Fix sign-extend
+    IDEX_state_register->funct = IFID_state_register->instruction.funct;
+
     IDEX_state_register->rt = IFID_state_register->instruction.rt;
     IDEX_state_register->rd = IFID_state_register->instruction.rd;
+
+
+    control_signal_decoder(IFID_state_register->instruction, IDEX_state_register);
+    registers_process(IFID_state_register, MEMWB_state_register, IDEX_state_register);    
 
 }
 
@@ -50,8 +54,8 @@ void execute(IDEX *IDEX_state_register, EXMEM *EXMEM_state_register) {
     EXMEM_state_register->REGReadData2 = IDEX_state_register->REGReadData2;
     
     EXMEM_state_register->writeRegister = (uint8_t)MUX_2to1(
-        &(uint8_t)IDEX_state_register->rt, 
-        &(uint8_t)IDEX_state_register->rd, 
+        &IDEX_state_register->rt, 
+        &IDEX_state_register->rd, 
         IDEX_state_register->sig_RegDst
     );
 }

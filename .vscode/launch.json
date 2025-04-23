@@ -13,7 +13,7 @@
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -27,6 +27,15 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "LLDB Launch",
+            "program": "${workspaceFolder}/simulator/main.exe",
+            "args": ["${workspaceFolder}/simulator/squares1.asm"],
+            "cwd": "${workspaceFolder}/simulator"
         }
     ]
 }

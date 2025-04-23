@@ -31,15 +31,16 @@ void not_printf(char* buf, size_t len) {
 
 void parse_tokens(instructionEncapuslator *instPointer, char token_list[5][11]) {
 
-    printf("\n\n TOKEN PARSER \n\n");
-
+    
     // The opcode will always be the first token
     strcpy(instPointer->opcode, token_list[0]);
-
-
-    printf("\n");
-    not_printf(token_list[1], 10);
-    printf("\n");
+    
+    
+    #ifdef TEST
+        printf("\n\nTOKEN PARSER <== \n");
+        not_printf(token_list[1], 10);
+        printf("\n");
+    #endif
 
     if (strcmp(instPointer->opcode, "J") == 0) {
         instPointer->type = J;
@@ -65,7 +66,7 @@ void parse_tokens(instructionEncapuslator *instPointer, char token_list[5][11]) 
         instPointer->type = I;
         instPointer->rs = register_translator(token_list[2]);
         instPointer->rt = register_translator(token_list[1]);
-        instPointer->immediate = token_list[3];
+        instPointer->immediate = strtol(token_list[3], NULL, 10);
 
         // absolute addressing is used for LW and SW and the immediate is not read (given rs register contains address)
     }
@@ -78,16 +79,20 @@ void parse_tokens(instructionEncapuslator *instPointer, char token_list[5][11]) 
     //     printf("LABEL %s", token_list[0]);
     // }
 
-    printf("OPCODE: "); 
-    not_printf(instPointer->opcode, 11);
-    printf("\n");
+    #ifdef TEST
+        printf("OPCODE: "); 
+        not_printf(instPointer->opcode, 11);
+        printf("\n");
+    #endif
 }
 
 
 instructionEncapuslator parse_line(char line[150]) {
-    printf("LINE TO PARSE:\n");
-    not_printf(line, 50);
-    printf("\n");
+    #ifdef TEST
+        printf("LINE TO PARSE: <==\n");
+        not_printf(line, 50);
+        printf("\n");
+    #endif
 
     instructionEncapuslator parsed_instruction = {.opcode="NONE", .type=-1, .rs=0, .rt=0, .rd=0, .shamt=0, .immediate=0, .address=0};
     

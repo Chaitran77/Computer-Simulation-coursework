@@ -4,10 +4,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "utils/functional_units.h"
+// #define TEST
+
 #include "utils/global_enums.h"
 #include "utils/register_translator.h"
 #include "utils/register_structs.h"
+#include "utils/functional_units.h"
 #include "utils/tests.h"
 #include "utils/memory.h"
 #include "utils/bootloader.h"
@@ -17,14 +19,12 @@
 #define ADD 0b00101001
 
 
-
 /* NOTE: 
 Written in functional blocks where the output of one function is passed as the input to another. 
 The structure will be analagous to the pipelined MIPS processor architecture.
 If chained together correctly and each block is correctly implemented then the whole processor cycle will work as expected.
 */
 
-// #define strTest
 
 // TODO: Pipeline stage registers
 IFID IFID_pipeline_register = {0};
@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
         if (clock) { // first half of clock cycle
             
             // all this happens simulataneously in real HW
-            fetch(&IFID_pipeline_register, &EXMEM_pipeline_register, SPR_FILE.PC);
+            fetch(&IFID_pipeline_register, &EXMEM_pipeline_register, &SPR_FILE.PC);
             decode(&IFID_pipeline_register, &MEMWB_pipeline_register, &IDEX_pipeline_register);
             execute(&IDEX_pipeline_register, &EXMEM_pipeline_register);
             memory(&EXMEM_pipeline_register, &MEMWB_pipeline_register);
