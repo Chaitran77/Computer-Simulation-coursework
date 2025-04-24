@@ -11,11 +11,11 @@ void fetch(IFID *IFID_state_register, EXMEM *EXMEM_state_register, uint8_t *PC_a
     );
     
     
-    printf("FETCHING INSTRUCTION NUMBER %d", *PC_address);
+    printf("FETCHING INSTRUCTION NUMBER %d\n", *PC_address);
 
     IM_process(IFID_state_register, *PC_address);
 
-    printf("FETCHED INSTRUCTION ")
+    printf("FETCHED INSTRUCTION \n");
 }
 
 void decode(IFID *IFID_state_register, MEMWB *MEMWB_state_register, IDEX *IDEX_state_register) {

@@ -5,18 +5,18 @@
 #include <stdint.h>
 
 // #define TEST
+#define RUNTESTS
 
 #include "utils/global_enums.h"
 #include "utils/register_translator.h"
 #include "utils/register_structs.h"
 #include "utils/functional_units.h"
-#include "utils/tests.h"
 #include "utils/memory.h"
 #include "utils/bootloader.h"
-
 #include "utils/stage_comb_logic.h"
 
-#define ADD 0b00101001
+#include "utils/tests.h"
+
 
 
 /* NOTE: 
@@ -33,40 +33,17 @@ EXMEM EXMEM_pipeline_register, EXMEM_pipeline_register_snapshot = {0};
 MEMWB MEMWB_pipeline_register, MEMWB_pipeline_register_snapshot = {0};
 
 
-SPRs SPR_FILE = {.PC = 0b0};
-// control_unit CONTROL_UNIT;
+SPRs SPR_FILE = {.PC = 0};
 
 // tracking variables - part of simulator
 bool clock = 0;
 int cycleNumber = 0;
 
-// A new state machine struct is created every time a new instruction starts
 
-// typedef struct {
-//     STATE state;
-// } instructionState;
-
-// void ASM(instructionState *instructionState) {
-//     switch (instructionState -> state)
-//     {
-//     case IF:
-//         /* code */
-        
-//         break;
-//     case ID:
-//         break;
-//     case EX:
-//         break;
-//     case MEM:
-//         break;
-//     case WB:
-//         break;
-//     default:
-//         break;
-//     }
-// }
 
 int main(int argc, char **argv) {
+
+    #ifndef RUNTESTS
 
     bootloader(argv[1]);
 
@@ -102,8 +79,13 @@ int main(int argc, char **argv) {
             cycleNumber++;
         }
 
-    } while (getchar() == '\n');
+    } while (1); // (getchar() == '\n');
 
+    #else
+
+    run_tests();
+
+    #endif
 
     printf("Exiting.");
     

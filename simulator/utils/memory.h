@@ -56,7 +56,7 @@ static uint32_t DM[256] = {0}; // max data addresses = 256, 32-bit wide data => 
 static uint32_t REG[32] = {0};
 
 uint32_t get_reg(uint8_t reg_number) {
-    if (!(reg_number > 32 || reg_number < 0)) return REG[reg_number-1];
+    if (!(reg_number > 32 || reg_number < 0)) return REG[reg_number];
     printf("INVALID REGISTER %d", reg_number); exit(-1); 
 }
 
