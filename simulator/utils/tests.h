@@ -114,27 +114,43 @@ void run_instruction() {
     };
 
     
-    SPRs SPR_FILE = {.PC = 0b0};
+    SPRs SPR_FILE = {.PC = 0};
     
     IFID_pipeline_register_snapshot = IFID_pipeline_register;
     IDEX_pipeline_register_snapshot = IDEX_pipeline_register;
     EXMEM_pipeline_register_snapshot = EXMEM_pipeline_register;
     MEMWB_pipeline_register_snapshot = MEMWB_pipeline_register;
 
-    fetch(&IFID_pipeline_register, &EXMEM_pipeline_register, &SPR_FILE.PC);
-    decode(&IFID_pipeline_register_snapshot, &MEMWB_pipeline_register_snapshot, &IDEX_pipeline_register);
-    execute(&IDEX_pipeline_register_snapshot, &EXMEM_pipeline_register);
-    memory(&EXMEM_pipeline_register_snapshot, &MEMWB_pipeline_register);
+    // fetch(&IFID_pipeline_register, &EXMEM_pipeline_register, &SPR_FILE.PC);
+    // decode(&IFID_pipeline_register_snapshot, &MEMWB_pipeline_register_snapshot, &IDEX_pipeline_register);
+    // execute(&IDEX_pipeline_register_snapshot, &EXMEM_pipeline_register);
+    // memory(&EXMEM_pipeline_register_snapshot, &MEMWB_pipeline_register);
     
+    // instructionEncapuslator test_instruction = {
+    //     .opcode = "ADDI",
+    //     .rd = 16, .rs = 14, .rt = 15,
+    //     .funct = 0,
+    //     .address = 0,
+    //     .immediate = 15,
+    //     .type = I,
+    //     .shamt = 0
+    // };
+
+    set_reg(16, 17);
+
     instructionEncapuslator test_instruction = {
-        .opcode = "ADD",
-        .rd = 16, .rs = 0, .rt = 0,
+        .opcode = "ADDI",
+        .rd = 16, .rs = 14, .rt = 15,
         .funct = 0,
-        
+        .address = 0,
+        .immediate = 0,
+        .type = I,
         .shamt = 0
     };
 
     control_signal_decoder(test_instruction, &IDEX_pipeline_register);
+    execute(&IDEX_pipeline_register_snapshot, &EXMEM_pipeline_register);
+
 
     
 }

@@ -3,8 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/simulator/**"
+                "/media/SharedStore/ComputerSimulationCoursework/**",
+                "/media/SharedStore/ComputerSimulationCoursework/simulator/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -13,9 +13,19 @@
             ],
             "windowsSdkVersion": "10.0.19041.0",
             "compilerPath": "C:/MinGW/bin/gcc.exe",
-            "cStandard": "c23",
+            "cStandard": "c17",
             "cppStandard": "c++23",
-            "intelliSenseMode": "linux-gcc-x64"
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerPathInCppPropertiesJson": "C:/MinGW/bin/gcc.exe",
+            "mergeConfigurations": false,
+            "recursiveIncludes": {
+                "reduce": "default",
+                "priority": "afterSystemIncludes",
+                "order": "depthFirst"
+            },
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true
+            }
         },
         {
             "name": "Linux",
@@ -28,10 +38,9 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "cStandard": "c23",
+            "cStandard": "c17",
             "cppStandard": "c++23",
             "intelliSenseMode": "linux-gcc-x64",
-            "compilerPath": "/usr/bin/gcc",
             "mergeConfigurations": false,
             "recursiveIncludes": {
                 "reduce": "default",
@@ -41,7 +50,8 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true
             },
-            "compilerPathInCppPropertiesJson": "/usr/bin/gcc"
+            "compilerPathInCppPropertiesJson": "/usr/bin/gcc",
+            "compilerPath": "/usr/bin/gcc"
         }
     ],
     "version": 4

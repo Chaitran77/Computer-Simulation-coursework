@@ -62,12 +62,11 @@ uint32_t get_reg(uint8_t reg_number) {
 
 void set_reg(uint8_t reg_number, uint32_t value) {
     if (!(reg_number > 32 || reg_number < 1)) {
-        REG[reg_number-1] = value;
+        REG[reg_number] = value;
     } else {
         printf("INVALID REGISTER %d (set)", reg_number); exit(-1); 
     };
 }
-
 
 instructionEncapuslator *get_inst(uint8_t addr) {
     if (addr <= (sizeof(IM)/sizeof(IM[0]))-1) return &IM[addr];
