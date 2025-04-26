@@ -101,7 +101,7 @@ instructionEncapuslator parse_line(char line[150]) {
     int token_number = 0;
     int token_char_i = 0;
     
-    char tokens[5][11] = {{'\0'}};
+    char tokens[5][11] = {"\0\0\0\0\0\0\0\0\0\0\0"};
     char* token_pointers[5];
 
 
@@ -136,7 +136,7 @@ instructionEncapuslator parse_line(char line[150]) {
 }
 
 
-void santise(char * destination, char *fileLine) {
+void santise(char * destination, char fileLine[150]) {
 
     for (int i=0; fileLine[i] != '\0'; i++) {
         if ((fileLine[i] == '\n') || (fileLine[i] == '#')) break;

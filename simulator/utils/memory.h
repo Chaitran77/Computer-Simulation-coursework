@@ -56,17 +56,18 @@ static uint32_t DM[256] = {0}; // max data addresses = 256, 32-bit wide data => 
 static uint32_t REG[32] = {0};
 
 uint32_t get_reg(uint8_t reg_number) {
-    if (!(reg_number > 32 || reg_number < 0)) return REG[reg_number];
+    if (!(reg_number > 32 || reg_number < 0)) return REG[reg_number-1];
     printf("INVALID REGISTER %d", reg_number); exit(-1); 
 }
 
 void set_reg(uint8_t reg_number, uint32_t value) {
     if (!(reg_number > 32 || reg_number < 1)) {
-        REG[reg_number] = value;
+        REG[reg_number-1] = value;
     } else {
         printf("INVALID REGISTER %d (set)", reg_number); exit(-1); 
     };
 }
+
 
 instructionEncapuslator *get_inst(uint8_t addr) {
     if (addr <= (sizeof(IM)/sizeof(IM[0]))-1) return &IM[addr];

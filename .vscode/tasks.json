@@ -3,7 +3,7 @@
     "tasks": [
         {
             "label": "Simulator build task",
-            "command": "gcc -o \"${workspaceFolder}/simulator/a.out\" \"${workspaceFolder}/simulator/main.c\" -g3 -O0",
+            "command": "gcc \"${workspaceFolder}/simulator/main.c\"",
             "type": "shell",
             "args": [],
             "presentation": {

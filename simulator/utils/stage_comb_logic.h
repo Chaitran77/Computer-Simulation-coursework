@@ -1,25 +1,25 @@
 // most combinational wires/connections are made here
 
 void fetch(IFID *IFID_state_register, EXMEM *EXMEM_state_register, uint8_t *PC_address) {
-    // TODO: Check if SPR.PC is updated
+    
     IFID_state_register->PCNext = ADD(*PC_address, 1);
     
-    *PC_address = *(uint8_t*)MUX_2to1(
+    PC_address = (uint8_t*)MUX_2to1(
         &IFID_state_register->PCNext,
         &EXMEM_state_register->PCNext, 
         AND(EXMEM_state_register->sig_Branch, EXMEM_state_register->sig_ALUZero)
     );
     
     
-    printf("FETCHING INSTRUCTION NUMBER %d\n", *PC_address);
+    printf("FETCHING INSTRUCTION NUMBER %d", *PC_address);
 
     IM_process(IFID_state_register, *PC_address);
 
-    printf("FETCHED INSTRUCTION \n");
+    printf("FETCHED INSTRUCTION ")
 }
 
 void decode(IFID *IFID_state_register, MEMWB *MEMWB_state_register, IDEX *IDEX_state_register) {
-    // TODO: The following resets PC for some reason 
+
     IDEX_state_register->PCNext = IFID_state_register->PCNext;
 
     IDEX_state_register->signExtImm = IFID_state_register->instruction.immediate; // TODO: Fix sign-extend
@@ -44,7 +44,7 @@ void execute(IDEX *IDEX_state_register, EXMEM *EXMEM_state_register) {
         
     EXMEM_state_register->ALUResult=ALU(
         IDEX_state_register->REGReadData1, 
-        *(uint32_t*)MUX_2to1(
+        (uint32_t)MUX_2to1(
             &IDEX_state_register->REGReadData2, 
             &IDEX_state_register->signExtImm, 
             IDEX_state_register->sig_ALUSrc
@@ -54,12 +54,12 @@ void execute(IDEX *IDEX_state_register, EXMEM *EXMEM_state_register) {
     );
 
     EXMEM_state_register->PCNext = (uint8_t)ADD(
-        *(uint32_t*)IDEX_state_register->PCNext, 
+        (uint32_t)IDEX_state_register->PCNext, 
         IDEX_state_register->signExtImm
     );
     EXMEM_state_register->REGReadData2 = IDEX_state_register->REGReadData2;
     
-    EXMEM_state_register->writeRegister = *(uint8_t*)MUX_2to1(
+    EXMEM_state_register->writeRegister = (uint8_t)MUX_2to1(
         &IDEX_state_register->rt, 
         &IDEX_state_register->rd, 
         IDEX_state_register->sig_RegDst

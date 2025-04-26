@@ -1,4 +1,3 @@
-
 void* MUX_2to1(void* in0, void* in1, bool select) {
     /* returns a pointer of undefined type to one of the inputs; 
         all calls should be cast back to the input type */
@@ -9,7 +8,7 @@ uint32_t ADD(uint32_t in1, uint32_t in2) {
      return in1+in2;
 }
 
-bool AND(bool in1, bool in2) {
+uint32_t AND(bool in1, bool in2) {
     return in1&&in2; // TODO: Check operator
 }
 

@@ -3,8 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "/media/SharedStore/ComputerSimulationCoursework/**",
-                "/media/SharedStore/ComputerSimulationCoursework/simulator/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/simulator/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -13,45 +13,9 @@
             ],
             "windowsSdkVersion": "10.0.19041.0",
             "compilerPath": "C:/MinGW/bin/gcc.exe",
-            "cStandard": "c17",
+            "cStandard": "c23",
             "cppStandard": "c++23",
-            "intelliSenseMode": "linux-gcc-x64",
-            "compilerPathInCppPropertiesJson": "C:/MinGW/bin/gcc.exe",
-            "mergeConfigurations": false,
-            "recursiveIncludes": {
-                "reduce": "default",
-                "priority": "afterSystemIncludes",
-                "order": "depthFirst"
-            },
-            "browse": {
-                "limitSymbolsToIncludedHeaders": true
-            }
-        },
-        {
-            "name": "Linux",
-            "includePath": [
-                "/media/SharedStore/ComputerSimulationCoursework/**",
-                "/media/SharedStore/ComputerSimulationCoursework/simulator/**"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "cStandard": "c17",
-            "cppStandard": "c++23",
-            "intelliSenseMode": "linux-gcc-x64",
-            "mergeConfigurations": false,
-            "recursiveIncludes": {
-                "reduce": "default",
-                "priority": "afterSystemIncludes",
-                "order": "depthFirst"
-            },
-            "browse": {
-                "limitSymbolsToIncludedHeaders": true
-            },
-            "compilerPathInCppPropertiesJson": "/usr/bin/gcc",
-            "compilerPath": "/usr/bin/gcc"
+            "intelliSenseMode": "windows-msvc-x64"
         }
     ],
     "version": 4
