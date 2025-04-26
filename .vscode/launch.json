@@ -8,12 +8,13 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/simulator/main.exe",
-            "args": ["${workspaceFolder}/simulator/squares1.asm"],
+            "preLaunchTask": "Simulator build task",
+            "program": "${workspaceFolder}/simulator/a.out",
+            "args": ["${workspaceFolder}/simulator/squares2.asm"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": true,
+            "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
                 {

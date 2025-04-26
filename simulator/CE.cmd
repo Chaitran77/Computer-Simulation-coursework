@@ -1,1 +1,1 @@
-gcc main.c -o out.exe && out.exe squares2.asm
+gcc main.c -o a.out && a.out squares2.asm

@@ -99,29 +99,13 @@ void set_data(uint8_t addr, uint32_t data) {
 
 // for debugging
 
-void print_instruction(int address) {
-    instructionEncapuslator *inst = get_inst(address);
-    
-    printf(
-        "OP: %5s | rs: %2d | rt: %2d | rd: %2d | funct: %1d | shamt: %2d | imm: %5d | addr: %5d|\n", 
-        inst->opcode,
-        inst->rs,
-        inst->rt,
-        inst->rd,
-        inst->funct,
-        inst->shamt,
-        inst->immediate,
-        inst->address
-    );
-}
-
 void output_IM() {
     printf("INST MEM\nAddress		Instruction\n");
     for (uint16_t i = 0; i < (sizeof(IM)/sizeof(IM[0])); i++)
     {        
         if (i==20) break;
         printf("%7d		", i);
-        print_instruction(i);
+        print_instruction(get_inst(i));
     }
     
 }

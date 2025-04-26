@@ -16,7 +16,7 @@ typedef struct {
     uint8_t rs, rt, rd; 
     bool funct; // only 1 function
     int8_t shamt;
-    int16_t immediate;
+    uint16_t immediate;
     uint32_t address; // following 26-bit address convention, but IM really only requires 8 bits
 } instructionEncapuslator;
 
@@ -59,3 +59,70 @@ typedef struct {
     uint32_t ALUResult;
     uint8_t writeRegister;
 } MEMWB;
+
+
+void print_instruction(const instructionEncapuslator* instr) {
+    
+    printf(
+        "[INST] | op: %5s | rs: %2d | rt: %2d | rd: %2d | funct: %1d | shamt: %2d | imm: %5d | addr: %5d|\n", 
+        instr->opcode,
+        instr->rs,
+        instr->rt,
+        instr->rd,
+        instr->funct,
+        instr->shamt,
+        instr->immediate,
+        instr->address
+    );
+}
+
+void print_IFID(const IFID* ifid, bool new) {
+    printf("[%s IFID] | PCNext: %u | ", new ? "New" : "Old", ifid->PCNext);
+    print_instruction(&ifid->instruction);
+}
+
+void print_IDEX(const IDEX* idex, bool new) {
+    printf("[%s IDEX] | sig_RegDst: %s | sig_ALUSrc: %s | sig_MemtoReg: %s | sig_RegWrite: %s | sig_MemRead: %s | sig_MemWrite: %s | sig_Branch: %s | sig_ALUOp: %u | PCNext: %u | REGReadData1: %u | REGReadData2: %u | signExtImm: %u | funct: %s | rt: %u | rd: %u\n",
+            new ? "New" : "Old",
+            idex->sig_RegDst ? "true" : "false",
+            idex->sig_ALUSrc ? "true" : "false",
+            idex->sig_MemtoReg ? "true" : "false",
+            idex->sig_RegWrite ? "true" : "false",
+            idex->sig_MemRead ? "true" : "false",
+            idex->sig_MemWrite ? "true" : "false",
+            idex->sig_Branch ? "true" : "false",
+            idex->sig_ALUOp,
+            idex->PCNext,
+            idex->REGReadData1,
+            idex->REGReadData2,
+            idex->signExtImm,
+            idex->funct ? "true" : "false",
+            idex->rt,
+            idex->rd);
+}
+
+void print_EXMEM(const EXMEM* exmem, bool new) {
+    printf("[%s EXMEM] | sig_MemtoReg: %s | sig_RegWrite: %s | sig_MemRead: %s | sig_MemWrite: %s | sig_Branch: %s | sig_ALUZero: %s | PCNext: %u | ALUResult: %u | REGReadData2: %u | writeRegister: %u\n",
+            new ? "New" : "Old",
+            exmem->sig_MemtoReg ? "true" : "false",
+            exmem->sig_RegWrite ? "true" : "false",
+            exmem->sig_MemRead ? "true" : "false",
+            exmem->sig_MemWrite ? "true" : "false",
+            exmem->sig_Branch ? "true" : "false",
+            exmem->sig_ALUZero ? "true" : "false",
+            exmem->PCNext,
+            exmem->ALUResult,
+            exmem->REGReadData2,
+            exmem->writeRegister);
+}
+
+void print_MEMWB(const MEMWB* memwb, bool new) {
+    printf("[%s MEMWB] | sig_MemtoReg: %s | sig_RegWrite: %s | DMReadData: %u | ALUResult: %u | writeRegister: %u\n",
+            new ? "New" : "Old",
+            memwb->sig_MemtoReg ? "true" : "false",
+            memwb->sig_RegWrite ? "true" : "false",
+            memwb->DMReadData,
+            memwb->ALUResult,
+            memwb->writeRegister);
+}
+

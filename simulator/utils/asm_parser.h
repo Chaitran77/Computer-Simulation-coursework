@@ -1,33 +1,6 @@
 // #include <string.h>
 // #include "utils/register_structs.h"
 
-void not_printf(char* buf, size_t len) {
-	for (size_t i = 0; i < len; i++) {
-		switch (buf[i]) {
-			case '\0': {
-				printf("\\0");
-				break;
-			}
-			case '\n': {
-				printf("\\n");
-				break;
-			}
-			case '\t': {
-				printf("\\t");
-				break;
-			}
-			case '\r': {
-				printf("\\r");
-				break;
-			}
-			default: {
-				fputc(buf[i], stdout);
-				break;
-			}
-		}
-	}
-}
-
 
 void parse_tokens(instructionEncapuslator *instPointer, char token_list[5][11]) {
 
@@ -101,7 +74,7 @@ instructionEncapuslator parse_line(char line[150]) {
     int token_number = 0;
     int token_char_i = 0;
     
-    char tokens[5][11] = {"\0\0\0\0\0\0\0\0\0\0\0"};
+    char tokens[5][11] = {{'\0'}};
     char* token_pointers[5];
 
 
@@ -136,7 +109,7 @@ instructionEncapuslator parse_line(char line[150]) {
 }
 
 
-void santise(char * destination, char fileLine[150]) {
+void santise(char * destination, char *fileLine) {
 
     for (int i=0; fileLine[i] != '\0'; i++) {
         if ((fileLine[i] == '\n') || (fileLine[i] == '#')) break;

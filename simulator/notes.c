@@ -14,10 +14,15 @@ int main() {
     //     printf("yesy");
     // }
 
+    // uint32_t A = 200;
+    // uint32_t B = 321;
+
+    // uint32_t result = A > B;
+
+    // printf("%d", result);
+
     uint32_t A = 200;
-    uint32_t B = 321;
+    uint8_t B = (uint8_t)A;
 
-    uint32_t result = A > B;
-
-    printf("%d", result);
+    printf("%u", B);
 }
