@@ -64,7 +64,7 @@ typedef struct {
 void print_instruction(const instructionEncapuslator* instr) {
     
     printf(
-        "[INST] | op: %5s | rs: %2d | rt: %2d | rd: %2d | funct: %1d | shamt: %2d | imm: %5d | addr: %5d|\n", 
+        "INST: | op: %5s | rs: %2d | rt: %2d | rd: %2d | funct: %1d | shamt: %2d | imm: %5d | addr: %5d|\n\e[0;37m", 
         instr->opcode,
         instr->rs,
         instr->rt,
@@ -76,13 +76,14 @@ void print_instruction(const instructionEncapuslator* instr) {
     );
 }
 
-void print_IFID(const IFID* ifid, bool new) {
-    printf("[%s IFID] | PCNext: %u | ", new ? "New" : "Old", ifid->PCNext);
+void print_IFID(const IFID* ifid, bool new, bool track_instruction) {
+    printf("%s[%s IFID] | PCNext: %u | ", track_instruction?(new?"\e[0;32m":"\e[0;31m"):"", new ? "New" : "Old", ifid->PCNext);
     print_instruction(&ifid->instruction);
 }
 
-void print_IDEX(const IDEX* idex, bool new) {
-    printf("[%s IDEX] | sig_RegDst: %s | sig_ALUSrc: %s | sig_MemtoReg: %s | sig_RegWrite: %s | sig_MemRead: %s | sig_MemWrite: %s | sig_Branch: %s | sig_ALUOp: %u | PCNext: %u | REGReadData1: %u | REGReadData2: %u | signExtImm: %u | funct: %s | rt: %u | rd: %u\n",
+void print_IDEX(const IDEX* idex, bool new, bool track_instruction) {
+    printf("%s[%s IDEX] | _RegDst: %s | _ALUSrc: %s | _MemtoReg: %s | _RegWrite: %s | _MemRead: %s | _MemWrite: %s | _Branch: %s | _ALUOp: %u | PCNext: %u | REGReadData1: %u | REGReadData2: %u | signExtImm: %u | funct: %s | rt: %u | rd: %u\n\e[0;37m",
+            track_instruction?(new?"\e[0;32m":"\e[0;31m"):"",
             new ? "New" : "Old",
             idex->sig_RegDst ? "true" : "false",
             idex->sig_ALUSrc ? "true" : "false",
@@ -101,8 +102,9 @@ void print_IDEX(const IDEX* idex, bool new) {
             idex->rd);
 }
 
-void print_EXMEM(const EXMEM* exmem, bool new) {
-    printf("[%s EXMEM] | sig_MemtoReg: %s | sig_RegWrite: %s | sig_MemRead: %s | sig_MemWrite: %s | sig_Branch: %s | sig_ALUZero: %s | PCNext: %u | ALUResult: %u | REGReadData2: %u | writeRegister: %u\n",
+void print_EXMEM(const EXMEM* exmem, bool new, bool track_instruction) {
+    printf("%s[%s EXMEM] | _MemtoReg: %s | _RegWrite: %s | _MemRead: %s | _MemWrite: %s | _Branch: %s | _ALUZero: %s | PCNext: %u | ALUResult: %u | REGReadData2: %u | writeRegister: %u\n\e[0;37m",
+            track_instruction?(new?"\e[0;32m":"\e[0;31m"):"",
             new ? "New" : "Old",
             exmem->sig_MemtoReg ? "true" : "false",
             exmem->sig_RegWrite ? "true" : "false",
@@ -116,8 +118,9 @@ void print_EXMEM(const EXMEM* exmem, bool new) {
             exmem->writeRegister);
 }
 
-void print_MEMWB(const MEMWB* memwb, bool new) {
-    printf("[%s MEMWB] | sig_MemtoReg: %s | sig_RegWrite: %s | DMReadData: %u | ALUResult: %u | writeRegister: %u\n",
+void print_MEMWB(const MEMWB* memwb, bool new, bool track_instruction) {
+    printf("%s[%s MEMWB] | _MemtoReg: %s | _RegWrite: %s | DMReadData: %u | ALUResult: %u | writeRegister: %u\n\e[0;37m",
+            track_instruction?(new?"\e[0;32m":"\e[0;31m"):"",
             new ? "New" : "Old",
             memwb->sig_MemtoReg ? "true" : "false",
             memwb->sig_RegWrite ? "true" : "false",

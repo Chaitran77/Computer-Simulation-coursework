@@ -47,6 +47,7 @@ void run_instruction(char **argv) {
 
     
     output_IM();
+    output_registers();
     
     
     for (uint8_t i = 0; i < 5; i++)
@@ -63,20 +64,20 @@ void run_instruction(char **argv) {
         execute(&IDEX_pipeline_register_snapshot, &EXMEM_pipeline_register);
         memory(&EXMEM_pipeline_register_snapshot, &MEMWB_pipeline_register);
     
-        print_IFID(&IFID_pipeline_register_snapshot, false);
-        print_IFID(&IFID_pipeline_register, true);
+        print_IFID(&IFID_pipeline_register_snapshot, false, false);
+        print_IFID(&IFID_pipeline_register, true, false);
     
-        print_IDEX(&IDEX_pipeline_register_snapshot, false);
-        print_IDEX(&IDEX_pipeline_register, true);
+        print_IDEX(&IDEX_pipeline_register_snapshot, false, false);
+        print_IDEX(&IDEX_pipeline_register, true, false);
     
-        print_EXMEM(&EXMEM_pipeline_register_snapshot, false);
-        print_EXMEM(&EXMEM_pipeline_register, true);
+        print_EXMEM(&EXMEM_pipeline_register_snapshot, false, false);
+        print_EXMEM(&EXMEM_pipeline_register, true, false);
     
-        print_MEMWB(&MEMWB_pipeline_register_snapshot, false);
-        print_MEMWB(&MEMWB_pipeline_register, true);
+        print_MEMWB(&MEMWB_pipeline_register_snapshot, false, false);
+        print_MEMWB(&MEMWB_pipeline_register, true, false);
     }
     
-    
+    output_registers();
     
     
     // instructionEncapuslator test_instruction = {

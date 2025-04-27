@@ -70,6 +70,9 @@ void memory(EXMEM *EXMEM_state_register, MEMWB *MEMWB_state_register) {
     MEMWB_state_register->sig_MemtoReg = EXMEM_state_register->sig_MemtoReg;
     MEMWB_state_register->sig_RegWrite = EXMEM_state_register->sig_RegWrite;
 
+    MEMWB_state_register->ALUResult = EXMEM_state_register->ALUResult;
+    MEMWB_state_register->writeRegister = EXMEM_state_register->writeRegister;
+
     DM_process(EXMEM_state_register, MEMWB_state_register);
 }
 

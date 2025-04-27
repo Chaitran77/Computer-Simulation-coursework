@@ -75,7 +75,6 @@ instructionEncapuslator parse_line(char line[150]) {
     int token_char_i = 0;
     
     char tokens[5][11] = {{'\0'}};
-    char* token_pointers[5];
 
 
     // line ends at first null character
@@ -87,7 +86,6 @@ instructionEncapuslator parse_line(char line[150]) {
             }
         } else if (token_char_i > 0) {
             tokens[token_number][token_char_i] = '\0';
-            token_pointers[token_number] = tokens[token_number];
             
             token_number++;
             token_char_i = 0;
@@ -101,7 +99,6 @@ instructionEncapuslator parse_line(char line[150]) {
 
     if (token_char_i > 0 && token_number < 5) {
         tokens[token_number][token_char_i] = '\0';
-        token_pointers[token_number] = tokens[token_number];
     }
     
     parse_tokens(&parsed_instruction, tokens);

@@ -74,7 +74,7 @@ void control_signal_decoder(instructionEncapuslator instruction, IDEX *IDEX_stat
           IDEX_state_register->sig_RegDst=true;
           IDEX_state_register->sig_ALUSrc=false;
           IDEX_state_register->sig_MemtoReg=false;
-          IDEX_state_register->sig_RegWrite=true; 
+          IDEX_state_register->sig_RegWrite=false; 
           IDEX_state_register->sig_MemRead=false; 
           IDEX_state_register->sig_MemWrite=false; 
           IDEX_state_register->sig_Branch=false; 
@@ -121,5 +121,18 @@ void control_signal_decoder(instructionEncapuslator instruction, IDEX *IDEX_stat
           IDEX_state_register->sig_Branch=false; 
           IDEX_state_register->sig_ALUOp=0;
           break;
+
+    default:
+        printf("NOP\n");
+        IDEX_state_register->sig_RegDst=false;
+        IDEX_state_register->sig_ALUSrc=false;
+        IDEX_state_register->sig_MemtoReg=false;
+        IDEX_state_register->sig_RegWrite=false; 
+        IDEX_state_register->sig_MemRead=false; 
+        IDEX_state_register->sig_MemWrite=false; 
+        IDEX_state_register->sig_Branch=false; 
+        IDEX_state_register->sig_ALUOp=0;
+        break;
+
   }
 }
