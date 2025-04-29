@@ -1,6 +1,6 @@
 // #include "register_structs.h"
 #include <stdio.h>
-#include "asm_parser.h"
+#include "asm_parser.c"
 
 // No need to pass pointer to IM since it's setters are global
 void bootloader(char *program_filename) {

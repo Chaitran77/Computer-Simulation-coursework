@@ -5,7 +5,8 @@ typedef struct {
 
 typedef struct {
     uint8_t PC; // stores the current access address in instruction memory
-    uint32_t IR; // stores the current instruction
+    bool STALL;
+    uint8_t STALL_COUNT;
 } SPRs;
 
 
@@ -30,7 +31,7 @@ typedef struct {
 } IFID;
 
 typedef struct {
-    bool sig_RegDst, sig_ALUSrc, sig_MemtoReg, sig_RegWrite, sig_MemRead, sig_MemWrite, sig_Branch;
+    bool sig_RegDst, sig_ALUSrc, sig_MemtoReg, sig_RegWrite, sig_MemRead, sig_MemWrite, sig_Branch, sig_Jump;
     uint8_t sig_ALUOp;
     
     uint8_t PCNext;
@@ -40,6 +41,7 @@ typedef struct {
     bool funct;
     uint8_t rt;
     uint8_t rd;
+
 } IDEX;
 
 typedef struct {
@@ -50,6 +52,7 @@ typedef struct {
     uint32_t ALUResult;
     uint32_t REGReadData2;
     uint8_t writeRegister;
+
 } EXMEM;
 
 typedef struct {
@@ -58,6 +61,7 @@ typedef struct {
     uint32_t DMReadData;
     uint32_t ALUResult;
     uint8_t writeRegister;
+
 } MEMWB;
 
 

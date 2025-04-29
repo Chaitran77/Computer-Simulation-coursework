@@ -69,19 +69,19 @@ void control_signal_decoder(instructionEncapuslator instruction, IDEX *IDEX_stat
   // instruction.type is derived from the opcode, so all the information is coming from the opcode 
 
   switch (instruction.type) {
-      case R: // R-type instruction
+      case R: // R-type instruction, ADD tested
           // control_unit = {.RegDst=true, false, false, true, false, false, false, true, false};
           IDEX_state_register->sig_RegDst=true;
           IDEX_state_register->sig_ALUSrc=false;
           IDEX_state_register->sig_MemtoReg=false;
-          IDEX_state_register->sig_RegWrite=false; 
+          IDEX_state_register->sig_RegWrite=true; 
           IDEX_state_register->sig_MemRead=false; 
           IDEX_state_register->sig_MemWrite=false; 
           IDEX_state_register->sig_Branch=false; 
           IDEX_state_register->sig_ALUOp=2; // use funct field
           break;
 
-      case I:
+      case I: // ADDI tested
           IDEX_state_register->sig_ALUOp=0;
           IDEX_state_register->sig_ALUSrc=true;
           
@@ -95,32 +95,36 @@ void control_signal_decoder(instructionEncapuslator instruction, IDEX *IDEX_stat
 
           IDEX_state_register->sig_Branch=false;
 
-          if (strcmp(instruction.opcode, "LW") == 0) {
-              IDEX_state_register->sig_RegDst=true;
+          if (strcmp(instruction.opcode, "LW") == 0) { // tested
+              IDEX_state_register->sig_RegDst=false;
               IDEX_state_register->sig_MemtoReg=true;
-              IDEX_state_register->sig_MemRead=false; 
+              IDEX_state_register->sig_MemRead=true; 
               IDEX_state_register->sig_MemWrite=false; 
 
-          } else if (strcmp(instruction.opcode, "SW") == 0) {
-              IDEX_state_register->sig_MemRead=true; 
-              IDEX_state_register->sig_MemWrite=false;
+          } else if (strcmp(instruction.opcode, "SW") == 0) { // tested
+              IDEX_state_register->sig_MemWrite=true;
+              IDEX_state_register->sig_RegWrite=false; 
 
-          } else if (strcmp(instruction.opcode, "BEQ") == 0) {
+          } else if (strcmp(instruction.opcode, "BEQ") == 0) { // tested
               IDEX_state_register->sig_ALUOp=1;
               IDEX_state_register->sig_Branch=true;
+              IDEX_state_register->sig_ALUSrc=false;
+              IDEX_state_register->sig_RegWrite=false;     
+              
           }
           break;
 
-      case J:
-          IDEX_state_register->sig_RegDst=false;
-          IDEX_state_register->sig_ALUSrc=false;
-          IDEX_state_register->sig_MemtoReg=false;
-          IDEX_state_register->sig_RegWrite=false; 
-          IDEX_state_register->sig_MemRead=false; 
-          IDEX_state_register->sig_MemWrite=false; 
-          IDEX_state_register->sig_Branch=false; 
-          IDEX_state_register->sig_ALUOp=0;
-          break;
+    //   case J:
+    //       IDEX_state_register->sig_RegDst=false;
+    //       IDEX_state_register->sig_ALUSrc=false;
+    //       IDEX_state_register->sig_MemtoReg=false;
+    //       IDEX_state_register->sig_RegWrite=false; 
+    //       IDEX_state_register->sig_MemRead=false; 
+    //       IDEX_state_register->sig_MemWrite=false; 
+    //       IDEX_state_register->sig_Branch=false; 
+    //       IDEX_state_register->sig_ALUOp=0;
+    //       IDEX_state_register->sig_Jump=true;
+    //       break;
 
     default:
         printf("NOP\n");

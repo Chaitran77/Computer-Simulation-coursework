@@ -67,11 +67,12 @@ uint32_t get_reg(uint8_t reg_number) {
 }
 
 void set_reg(uint8_t reg_number, uint32_t value) {
-    if (!(reg_number > 32 || reg_number < 1)) {
+    // TODO
+    // if (!(reg_number > 32 || reg_number < 1)) {
         REG[reg_number-1] = value;
-    } else {
-        printf("INVALID REGISTER %d (set)", reg_number); exit(-1); 
-    };
+    // } else {
+    //     printf("INVALID REGISTER %d (set)", reg_number); exit(-1); 
+    // };
 }
 
 
@@ -153,11 +154,11 @@ void output_DM() {
     DM[205] = 314159;
     #endif
 
-    printf("DATA MEM\n");
+    printf("DATA MEM\n |");
 
     for (uint16_t i = 0; i < (sizeof(DM)/sizeof(DM[0])); i++) // (sizeof(DM)/sizeof(DM[0]))
     {
-        printf("%3d %6d %c", i, get_data(i), ((i%8)==7)?'\n':' ');
+        printf("%3d: %6d %c | ", i, get_data(i), ((i%8)==7)?'\n':' ');
     }
     
 }

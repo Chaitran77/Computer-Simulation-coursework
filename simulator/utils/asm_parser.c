@@ -15,10 +15,6 @@ void parse_tokens(instructionEncapuslator *instPointer, char token_list[5][11]) 
         printf("\n");
     #endif
 
-    if (strcmp(instPointer->opcode, "J") == 0) {
-        instPointer->type = J;
-        instPointer->address = strtol(token_list[1], NULL, 10);
-    }
     
     if ((strcmp(instPointer->opcode, "ADD") == 0) || (strcmp(instPointer->opcode, "SLT") == 0)) {
         instPointer->type = R;

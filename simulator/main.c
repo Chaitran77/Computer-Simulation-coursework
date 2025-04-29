@@ -7,15 +7,15 @@
 // #define TEST
 // #define RUNTESTS
 
-#include "utils/global_enums.h"
-#include "utils/register_translator.h"
-#include "utils/register_structs.h"
-#include "utils/functional_units.h"
-#include "utils/memory.h"
-#include "utils/bootloader.h"
-#include "utils/stage_comb_logic.h"
+#include "utils/global_enums.c"
+#include "utils/register_translator.c"
+#include "utils/register_structs.c"
+#include "utils/functional_units.c"
+#include "utils/memory.c"
+#include "utils/bootloader.c"
+#include "utils/stages.c"
 
-#include "utils/tests.h"
+#include "utils/tests.c"
 
 
 
@@ -26,7 +26,7 @@ If chained together correctly and each block is correctly implemented then the w
 */
 
 
-// TODO: Pipeline stage registers
+// Pipeline stage registers
 IFID IFID_pipeline_register = {
     .PCNext = 0,
     .instruction = (instructionEncapuslator){ 
@@ -67,20 +67,21 @@ MEMWB MEMWB_pipeline_register_snapshot = {
 };
 
 
-SPRs SPR_FILE = {.PC = 0};
+SPRs SPR_FILE = {.PC = 0, .STALL = false, .STALL_COUNT = 0};
+
 
 // tracking variables - part of simulator
 bool clock = 0;
 int cycleNumber = 0;
 
-int maxCycles = 6;
+int maxCycles = 1000;
 
 int main(int argc, char **argv) {
     (void)argc;
     #ifndef RUNTESTS
 
     bootloader(argv[1]);
-    set_reg(17, 17);
+    // set_reg(17, 17);
 
     output_IM();
     output_DM();
@@ -100,33 +101,24 @@ int main(int argc, char **argv) {
         MEMWB_pipeline_register_snapshot = MEMWB_pipeline_register;
         
         // all this happens simulataneously in real HW
-        if (cycleNumber%5==0) printf("========\n");
+        
         print_IFID(&IFID_pipeline_register_snapshot, false, cycleNumber%5==0);
-        fetch(&IFID_pipeline_register, &EXMEM_pipeline_register, &SPR_FILE.PC);
+        fetch(&IFID_pipeline_register, &EXMEM_pipeline_register);
         print_IFID(&IFID_pipeline_register, true, cycleNumber%5==0);
-        if (cycleNumber%5==0) printf("========\n\n");
         
-        if (cycleNumber%5==1) printf("========\n");
         print_IDEX(&IDEX_pipeline_register_snapshot, false, cycleNumber%5==1);
-        decode(&IFID_pipeline_register_snapshot, &MEMWB_pipeline_register_snapshot, &IDEX_pipeline_register);
+        decode(&IFID_pipeline_register_snapshot, &MEMWB_pipeline_register_snapshot, &EXMEM_pipeline_register, &IDEX_pipeline_register);
         print_IDEX(&IDEX_pipeline_register, true, cycleNumber%5==1);
-        if (cycleNumber%5==1) printf("========\n\n");
-        
-        if (cycleNumber%5==2) printf("========\n");
+
         print_EXMEM(&EXMEM_pipeline_register_snapshot, false, cycleNumber%5==2);
         execute(&IDEX_pipeline_register_snapshot, &EXMEM_pipeline_register);
         print_EXMEM(&EXMEM_pipeline_register, true, cycleNumber%5==2);
-        if (cycleNumber%5==2) printf("========\n\n");
-        
-        if (cycleNumber%5==3) printf("========\n");
+
         print_MEMWB(&MEMWB_pipeline_register_snapshot, false, cycleNumber%5==3);
         memory(&EXMEM_pipeline_register_snapshot, &MEMWB_pipeline_register);
         print_MEMWB(&MEMWB_pipeline_register, true, cycleNumber%5==3);
-        if (cycleNumber%5==3) printf("========\n\n");
-        
-        if (cycleNumber%5==4) printf("========\n");
+
         writeback();
-        if (cycleNumber%5==4) {printf("========\n\n"); };
 
         output_registers();
 
@@ -145,6 +137,7 @@ int main(int argc, char **argv) {
     } while (1); // (getchar() == '\n');
 
     output_registers();
+    output_DM();
 
     #else
 

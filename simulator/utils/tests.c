@@ -42,7 +42,6 @@ void run_instruction(char **argv) {
     };
 
     
-    SPRs SPR_FILE = {.PC = 0};
     set_reg(17, 17);
 
     
@@ -59,8 +58,8 @@ void run_instruction(char **argv) {
         
         printf("\n\nCLOCK CYCLE %u\n", i);
 
-        fetch(&IFID_pipeline_register, &EXMEM_pipeline_register, &SPR_FILE.PC);
-        decode(&IFID_pipeline_register_snapshot, &MEMWB_pipeline_register_snapshot, &IDEX_pipeline_register);
+        fetch(&IFID_pipeline_register, &EXMEM_pipeline_register);
+        decode(&IFID_pipeline_register_snapshot, &MEMWB_pipeline_register_snapshot, &EXMEM_pipeline_register, &IDEX_pipeline_register);
         execute(&IDEX_pipeline_register_snapshot, &EXMEM_pipeline_register);
         memory(&EXMEM_pipeline_register_snapshot, &MEMWB_pipeline_register);
     
